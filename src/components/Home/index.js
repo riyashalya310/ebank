@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 
 const Home = props => {
   const logoutBtn = () => {
-    Cookies.remove('js_token')
+    Cookies.remove('jwt_token')
     const {history} = props
     history.replace('/ebank/login')
   }

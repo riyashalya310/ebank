@@ -1,4 +1,5 @@
 import {Component} from 'react'
+import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
 import './index.css'
 
@@ -38,19 +39,21 @@ class Login extends Component {
       method: 'POST',
       body: JSON.stringify(details),
     }
-    const response = await fetch(
-      'https://assets.ccbp.in/frontend/react-js/ebank',
-      options,
-    )
+    const response = await fetch('https://apis.ccbp.in/ebank/login', options)
+    const data = await response.json()
     if (response.ok) {
-      this.onSubmitSuccess(response.jwt_token)
+      this.onSubmitSuccess(data.jwt_token)
     } else {
-      this.onSubmitFailure(response.error_msg)
+      this.onSubmitFailure(data.error_msg)
     }
   }
 
   render() {
     const {userId, pin, errorMsg} = this.state
+    const jwtToken = Cookies.get('jwt_token')
+    if (jwtToken !== undefined) {
+      return <Redirect to="/" />
+    }
     return (
       <div>
         <img
